@@ -1,0 +1,337 @@
+<template>
+  <div>
+    <div v-if="andList">
+      <stockinone :msgData="msg" :big="oo" @getData="fn"></stockinone>
+    </div>
+    <div v-if="use">
+      <stockIntwo :msgData="box" @getData="fn"></stockIntwo>
+    </div>
+    <div v-if="isList">
+      <div class="header">
+        <span>日期:</span>
+        <el-date-picker
+          value-format="yyyy-MM-dd"
+          v-model="temp.startData"
+          type="date"
+          placeholder="开始日期"
+        >
+        </el-date-picker>
+
+        <el-date-picker
+          value-format="yyyy-MM-dd"
+          v-model="temp.endData"
+          type="date"
+          placeholder="结束日期"
+        >
+        </el-date-picker>
+
+        <span>单据类型:</span>
+        <el-select
+          class="opt"
+          v-model="value"
+          @change="leixing"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <span>来源:</span>
+        <el-select
+          class="opt"
+          v-model="value2"
+          @change="laiyuan"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="item in options2"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+        <el-input
+          v-model="temp.condition"
+          class="int"
+          placeholder="单据编号/往来单位/摘要/凭证号"
+        ></el-input>
+        <el-button @click="search">搜索</el-button>
+        <el-dropdown @command="handleCommand">
+          <el-button type="primary">
+            新增入库单<i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="产品入库单">产品入库单</el-dropdown-item>
+            <el-dropdown-item command="材料入库单">材料入库单</el-dropdown-item>
+            <el-dropdown-item command="周转材料入库单"
+              >周转材料入库单</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-button @click="del">删除</el-button>
+      </div>
+
+      <div>
+        <el-table
+          :key="tableKey"
+          :data="arrList"
+          border
+          height="1000"
+          fit
+          max-height="750"
+          highlight-current-row
+          class="tab"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection"></el-table-column>
+          <el-table-column align="center" label="单据日期">
+            <template slot-scope="scope">
+              <span>{{ scope.row.documentDate }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="单据编号">
+            <template slot-scope="scope">
+              <a @click="examine(scope.row)">{{ scope.row.documentCode }}</a>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="单据类型">
+            <template slot-scope="scope">
+              <span>{{ scope.row.documentType }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="往来单位">
+            <template slot-scope="scope">
+              <span>{{ scope.row.contactsSupplier }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="摘要">
+            <template slot-scope="scope">
+              <span>{{ scope.row.summary }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="数量">
+            <template slot-scope="scope">
+              <span>{{ scope.row.totalQuantity }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="金额">
+            <template slot-scope="scope">
+              <span>{{ scope.row.totalAmount }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="制单人">
+            <template slot-scope="scope">
+              <span>{{ scope.row.createBy }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="来源">
+            <template slot-scope="scope">
+              <span>{{ scope.row.source }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="凭证字号">
+            <template slot-scope="scope">
+              <span>{{ scope.row.voucherNo }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="发票号">
+            <template slot-scope="scope">
+              <span>{{ scope.row.invoiceNo }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { tool, del } from "@/api/acc/Repertory/StockIn";
+import stockinone from "./Stockinone";
+import stockIntwo from "./StockIntwo";
+import { getSettingState } from "@/api/acc/Repertory/InventorySettings";
+import { Message } from "element-ui";
+export default {
+  name: "StockIn",
+  components: { stockinone, stockIntwo },
+  data() {
+    return {
+      aa: [],
+      oo: "",
+      use: false,
+      msg: "",
+      box: "",
+      int: [],
+      list: "",
+      isList: true,
+      andList: false,
+      arr: [],
+      time: "",
+      dialogFormVisible: false,
+      value: "",
+      value2: "",
+      options: [
+        {
+          value: 1,
+          label: "材料入库单",
+        },
+        {
+          value: 2,
+          label: "产品入库单",
+        },
+        {
+          value: 3,
+          label: "周转材料入库单",
+        },
+      ],
+      options2: [
+        {
+          value: 1,
+          label: "手工新增",
+        },
+        {
+          value: 2,
+          label: "自动生成",
+        },
+        {
+          value: 3,
+          label: "导入",
+        },
+      ],
+      arrList: [],
+      tableKey: 1,
+      temp: {
+        condition: "",
+        startData: "", //开始时间
+        endData: "", //结束时间
+        source: "", //来源
+        type: "", //类型
+      },
+    };
+  },
+  beforeRouteEnter(to, from, next) {
+    getSettingState().then((response) => {
+      if (response.data.retCode === 500) {
+        return Message.warning(response.data.message);
+      }
+      if (response.data.message === "未进入子系统") {
+        this.$router.push("/");
+        return;
+      }
+      next();
+    });
+  },
+  created() {
+    if (
+      sessionStorage.getItem("oo") &&
+      sessionStorage.getItem("documentType")
+    ) {
+      this.oo = sessionStorage.getItem("oo");
+      this.isList = false;
+      this.andList = true;
+      this.msg = sessionStorage.getItem("documentType");
+    }
+  },
+  methods: {
+    handleSelectionChange(e) {
+      console.log("删除选择", e);
+      e.map((item) => {
+        this.aa = item.id;
+        console.log(this.aa);
+      });
+    },
+    // 组件传值
+    fn(e) {
+      this.andList = e;
+      this.use = e;
+      this.isList = true;
+    },
+
+    // 自动生成入库账单
+    generate() {
+      (this.isList = false), (this.use = true);
+    },
+
+    // 数据类型
+    leixing(e) {
+      this.temp.type = e;
+    },
+    // 来源
+    laiyuan(e) {
+      this.temp.source = e;
+    },
+    handleCommand(command) {
+      if (command == "材料入库单") {
+        this.msg = "材料入库单";
+      }
+      if (command == "产品入库单") {
+        this.msg = "产品入库单";
+      }
+
+      if (command == "周转材料入库单") {
+        this.msg = "周转材料入库单";
+      }
+      this.oo = "";
+      this.isList = false;
+      this.andList = true;
+    },
+
+    // 搜索
+    search() {
+      tool(
+        this.temp.condition,
+        this.temp.endData,
+        this.temp.source,
+        this.temp.startData,
+        this.temp.type
+      ).then((res) => {
+        this.arrList = res.data.data;
+        console.log("搜索数据", res.data.data);
+      });
+    },
+
+    // 查看
+    examine(e) {
+      console.log("查看", e);
+      this.oo = e.id;
+      this.isList = false;
+      this.andList = true;
+      this.msg = e.documentType;
+    },
+
+    //删除指定入库单
+    del() {
+      del(this.aa).then((res) => {
+        console.log("删除反馈", res);
+      });
+    },
+  },
+};
+</script>
+
+<style scoped>
+.header {
+  margin: 10px 10px;
+}
+.int {
+  width: 230px;
+}
+.opt {
+  width: 130px;
+}
+
+.tab {
+  margin: 10px;
+}
+a {
+  color: #409eff !important;
+}
+a:hover {
+  text-decoration: underline;
+}
+</style>
