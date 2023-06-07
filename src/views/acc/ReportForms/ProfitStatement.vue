@@ -45,6 +45,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <el-button size="mini"> 批量导出 </el-button>
+        <el-button size="mini" @click="changeColumn">数据列互换</el-button>
       </div>
     </div>
 
@@ -54,8 +55,10 @@
           <tr>
             <th width="12%" style="height: 30px">项目</th>
             <th width="6%">行次</th>
-            <th width="6%">本年累计金额</th>
-            <th width="6%">本月金额</th>
+            <th width="6%" v-show="isChange">本年累计金额</th>
+            <th width="6%" v-show="!isChange">本月金额</th>
+            <th width="6%" v-show="isChange">本月金额</th>
+            <th width="6%" v-show="!isChange">本年累计金额</th>
           </tr>
         </thead>
         <tbody>
@@ -64,12 +67,18 @@
               @click="editMula(item)"
               class="pointer"
               style="text-align: left"
+              v-if="item.isInput"
             >
               <a>{{ item.projectItem }}</a>
             </td>
+            <td v-else style="text-align: left; margin-left: 10px">
+              {{ item.projectItem }}
+            </td>
             <td>{{ item.line }}</td>
-            <td>{{ item.yearNum }}</td>
-            <td>{{ item.periodNum }}</td>
+            <td v-show="isChange">{{ item.yearNum }}</td>
+            <td v-show="!isChange">{{ item.periodNum }}</td>
+            <td v-show="isChange">{{ item.periodNum }}</td>
+            <td v-show="!isChange">{{ item.yearNum }}</td>
           </tr>
         </tbody>
       </table>
@@ -111,6 +120,7 @@ export default {
         id: "",
         type: "",
       },
+      isChange: true,
       ruleList: [
         { value: 1, label: "实际损益额" },
         { value: 2, label: "借方发生额" },
@@ -174,6 +184,9 @@ export default {
       this.getList();
     },
     showDetail() {},
+    changeColumn() {
+      this.isChange = !this.isChange;
+    },
     output(type) {
       if (type === "EXCEL格式") {
         // 需要导出的数据源

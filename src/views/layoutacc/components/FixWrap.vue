@@ -58,6 +58,14 @@ export default {
           route: "/#/operatingmanual/detailamount",
           name: "数量金额明细账功能介绍及如何使用",
         },
+        {
+          route: "/#/operatingmanual/quantityamount",
+          name: "数量金额总账功能介绍及如何使用",
+        },
+        {
+          route: "/#/operatingmanual/multicolumn",
+          name: "多栏账功能介绍及如何使用",
+        },
       ],
     };
   },

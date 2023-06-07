@@ -65,7 +65,7 @@
             ref="table"
             size="mini"
             :data="tempData"
-            style="width: 100%"
+            class="t-scroll"
             show-summary
             border
             :key="tableKey"
@@ -186,11 +186,9 @@ export default {
   watch: {
     formulaData: {
       handler(val) {
-        console.log(val);
         if (this.parent === "BalanceSheet") {
           this.tempData = val;
         } else if (this.parent === "ProfitStatement") {
-          this.profitId = val.length && val[0].profitId;
           this.tempData = val;
         }
       },
@@ -198,6 +196,7 @@ export default {
     updateData(val) {
       this.parentUpdateData = val;
       this.bsId = val.id;
+      this.profitId = val.id;
       this.type = val.type;
       this.subjectName = "";
     },
@@ -377,5 +376,10 @@ export default {
 }
 .b-item:hover {
   background-color: #ddd;
+}
+.t-scroll .el-table__body-wrapper {
+  max-height: 105px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 </style>

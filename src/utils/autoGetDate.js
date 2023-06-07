@@ -18,7 +18,7 @@ export const getToday = function () {
     const y = date.getFullYear()
     const m = date.getMonth() + 1
     const d = date.getDate()
-    const day = `${y}-${m}-${d}`
+    const day = `${y}-${m > 10 ? m : '0' + m}-${d > 10 ? d : '0' + d}`
     return day
 }
 export const getWeek = function () {
@@ -31,7 +31,7 @@ export const getWeek = function () {
     const yy = date.getFullYear()
     const mm = date.getMonth() + 1
     const dd = date.getDate()
-    return [`${yy}-${mm}-${dd}`, `${y}-${m}-${d}`]
+    return [`${yy}-${mm > 10 ? mm : '0' + mm}-${dd > 10 ? dd : '0' + dd}`, `${y}-${m > 10 ? m : '0' + m}-${d > 10 ? d : '0' + d}`]
 }
 export const getMonth = function () {
     const date = new Date()
@@ -42,8 +42,8 @@ export const getMonth = function () {
 
     startDate = startDate > 9 ? startDate : "0" + startDate
     // 拼接
-    let yc = `${y}-${m}-${startDate}`
-    let ym = `${y}-${m}-${endDate}`
+    let yc = `${y}-${m > 10 ? m : '0' + m}-${startDate}`
+    let ym = `${y}-${m > 10 ? m : '0' + m}-${endDate}`
     let arr = [yc, ym]
     return arr
 }

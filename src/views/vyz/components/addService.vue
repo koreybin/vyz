@@ -17,6 +17,7 @@
                     <el-input
                       v-model="temp.clientName"
                       class="classinputx"
+                      @blur="autoNum"
                     ></el-input>
                   </el-form-item>
                 </el-col>
@@ -639,6 +640,7 @@
 import { getArea } from "@/api/rcdistract";
 import { addclient } from "@/api/client";
 import { getlistPartData } from "@/api/syspar";
+import { pinyin } from "pinyin-pro";
 export default {
   props: ["title", "addVisable"],
   watch: {
@@ -781,6 +783,20 @@ export default {
     this.getshengshiqu();
   },
   methods: {
+    autoNum(e) {
+      const val = e.currentTarget.value.substring(0, 4);
+      const py = pinyin(val, { pattern: "first" }).replace(/\s*/g, "");
+      const y = new Date().getFullYear();
+      const m = new Date().getMonth() + 1;
+      const d = new Date().getDate();
+      const h = new Date().getHours();
+      const mm = new Date().getMinutes();
+      const s = new Date().getSeconds();
+      this.temp.clientNo = py + "0001";
+      this.temp.contractNo = `JZ${y}${m > 10 ? m : "0" + m}${
+        d > 10 ? d : "0" + d
+      }${h}${mm}${s}`;
+    },
     insertContact() {
       this.temp.contacts.push({
         account: null,

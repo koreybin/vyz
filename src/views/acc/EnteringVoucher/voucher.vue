@@ -530,7 +530,7 @@
         :tempList="tempList"
       ></insertVoucherTemplate>
     </div>
-    <el-button @click="test([1, 5, 4, 2, 9, 9, 9], 3)">测试</el-button>
+    <!-- <el-button @click="test([12, 5, 4, 2, 9, 9, 9], 3)">测试</el-button> -->
   </div>
 </template>
  
@@ -783,43 +783,6 @@ export default {
   methods: {
     test(nums, k) {
       // console.log(this.list);
-      // let j = 0;
-      // for (let i = 0; i < nums.length; i++) {
-      //   if (nums[i] == nums[i + 1]) {
-      //     nums[i] *= 2;
-      //     nums[i + 1] = 0;
-      //   }
-      //   if (nums[i] != 0) {
-      //     [nums[i], nums[j]] = [nums[j], nums[i]];
-      //     j++;
-      //   }
-      // }
-      // return nums;
-      let right = 0,
-        left = 0,
-        set = new Set(),
-        ans = 0,
-        res = 0;
-      while (right != nums.length) {
-        // 如果set存过  set就从left开始删  直到没存过nums[right]
-        while (set.has(nums[right])) {
-          set.delete(nums[left]);
-          res -= nums[left++];
-          console.log(res);
-        }
-        // set存当前的nums[right]
-        set.add(nums[right]);
-        res += nums[right++];
-        // 如果有k个了 取大值  删除left的
-        if (right - left == k) {
-          ans = Math.max(ans, res);
-          set.delete(nums[left]);
-          res -= nums[left++];
-        }
-        console.log(res);
-      }
-      console.log(ans);
-      return ans;
     },
     wordChange(val) {
       const [id, prove] = val.split(",");
