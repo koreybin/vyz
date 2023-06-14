@@ -530,7 +530,7 @@
         :tempList="tempList"
       ></insertVoucherTemplate>
     </div>
-    <!-- <el-button @click="test('52233')">测试</el-button> -->
+    <el-button @click="test">测试</el-button>
   </div>
 </template>
  
@@ -572,7 +572,7 @@ export default {
       list: [
         {
           content: "",
-          aid: null,
+          aid: [],
           isShowMainInput: true,
           balanceDirection: "",
           subjectName: "",
@@ -605,6 +605,7 @@ export default {
         },
         {
           content: "",
+          aid: [],
           isShowMainInput: false,
           balanceDirection: "",
           subjectName: "",
@@ -637,6 +638,7 @@ export default {
         },
         {
           content: "",
+          aid: [],
           isShowMainInput: false,
           balanceDirection: "",
           subjectName: "",
@@ -669,7 +671,7 @@ export default {
         },
         {
           content: "",
-          aid: null,
+          aid: [],
           isShowMainInput: false,
           balanceDirection: "",
           subjectName: "",
@@ -781,9 +783,9 @@ export default {
   },
 
   methods: {
-    // test(s) {
-    //   console.log(this.list)
-    // },
+    test(s) {
+      console.log(this.list);
+    },
     wordChange(val) {
       const [id, prove] = val.split(",");
       this.voucher.word = id;
@@ -801,8 +803,6 @@ export default {
       this.list[index].subjectLen = this.list[index].otherSubjectName
         ? this.list[index].otherSubjectName.length
         : 0;
-      this.list[index].AuxiliaryList.forEach((item) => (item.value = ""));
-      this.list[index].AuxiliaryList.forEach((item) => delete item.id);
     },
     auxiliaryFocus(index, index11, type) {
       GetListPageByType(type, 1, 10).then(
@@ -1570,7 +1570,7 @@ export default {
     addList() {
       let obj = {
         content: "",
-        aid: null,
+        aid: [],
         isShowMainInput: false,
         balanceDirection: "",
         subjectName: "",
@@ -1723,7 +1723,7 @@ export default {
             this.list = [
               {
                 content: "",
-                aid: null,
+                aid: [],
                 isShowMainInput: true,
                 balanceDirection: "",
                 subjectName: "",
@@ -1756,8 +1756,8 @@ export default {
               },
               {
                 content: "",
-                aid: null,
-                isShowMainInput: true,
+                aid: [],
+                isShowMainInput: false,
                 balanceDirection: "",
                 subjectName: "",
                 subject: {
@@ -1789,8 +1789,8 @@ export default {
               },
               {
                 content: "",
-                aid: null,
-                isShowMainInput: true,
+                aid: [],
+                isShowMainInput: false,
                 balanceDirection: "",
                 subjectName: "",
                 subject: {
@@ -1822,8 +1822,8 @@ export default {
               },
               {
                 content: "",
-                aid: null,
-                isShowMainInput: true,
+                aid: [],
+                isShowMainInput: false,
                 balanceDirection: "",
                 subjectName: "",
                 subject: {

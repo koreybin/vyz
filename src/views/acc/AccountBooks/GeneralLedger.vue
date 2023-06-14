@@ -466,7 +466,7 @@ export default {
     },
     updateList() {
       this.getList();
-      this.pull();
+      // this.pull();
     },
     async getDetail(row) {
       setTimeout(() => {
