@@ -4,7 +4,6 @@ import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './styles/index.scss' // global css
 import api from "./interface/index"
-import bus from "@/utils/eventBus"
 import qs from 'qs'
 // import print from '@/utils/print'
 import print from '@/utils/printother'

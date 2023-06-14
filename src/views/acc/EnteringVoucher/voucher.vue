@@ -530,7 +530,7 @@
         :tempList="tempList"
       ></insertVoucherTemplate>
     </div>
-    <!-- <el-button @click="test([12, 5, 4, 2, 9, 9, 9], 3)">测试</el-button> -->
+    <!-- <el-button @click="test('52233')">测试</el-button> -->
   </div>
 </template>
  
@@ -781,9 +781,9 @@ export default {
   },
 
   methods: {
-    test(nums, k) {
-      // console.log(this.list);
-    },
+    // test(s) {
+    //   console.log(this.list)
+    // },
     wordChange(val) {
       const [id, prove] = val.split(",");
       this.voucher.word = id;
@@ -1889,6 +1889,12 @@ export default {
 </script>
  
 <style lang="scss" scoped>
+.charge-container {
+  background-color: transparent;
+}
+.charge {
+  background: #fff;
+}
 table {
   width: 100%;
   height: 100%;

@@ -1,10 +1,11 @@
 <template>
   <div>
     <el-dialog
-      :title="title"
+      :title="textMap[type]"
       :visible.sync="dialogFormVisible"
       width="55%"
       @close="handleClose"
+      :before-close="beforeHandle"
     >
       <el-tabs type="border-card">
         <el-tab-pane label="客户信息">
@@ -196,7 +197,7 @@
                         <el-col
                           :span="24"
                           v-for="(item, index) in temp.contacts"
-                          :key="item.clientId"
+                          :key="item.id"
                           style="margin: 2px"
                         >
                           <el-col :span="9"
@@ -393,8 +394,8 @@
                           class="classmarg"
                           placeholder="请选择"
                         >
-                          <el-option label="有" :value="1"> </el-option>
-                          <el-option label="无" :value="0"> </el-option>
+                          <el-option label="有" :value="'1'"> </el-option>
+                          <el-option label="无" :value="'0'"> </el-option>
                         </el-select>
                       </el-col>
                     </el-row>
@@ -549,7 +550,7 @@
                       <el-col :span="3">收款方式</el-col>
                       <el-col :span="9">
                         <el-select
-                          v-model="valueskfs"
+                          v-model="temp.receiveWay"
                           class="classmarg"
                           placeholder="请选择"
                         >
@@ -628,8 +629,11 @@
         <el-button v-else type="primary" @click="updateData">{{
           $t("table.confirm")
         }}</el-button> -->
-        <el-button type="primary" @click="createData">{{
+        <el-button type="primary" v-if="type == 'create'" @click="createData">{{
           $t("table.confirm")
+        }}</el-button>
+        <el-button type="primary" v-if="type == 'update'" @click="updateData">{{
+          $t("table.savebut")
         }}</el-button>
       </div>
     </el-dialog>
@@ -638,11 +642,11 @@
 
 <script>
 import { getArea } from "@/api/rcdistract";
-import { addclient } from "@/api/client";
+import { addclient, modifyClientData } from "@/api/client";
 import { getlistPartData } from "@/api/syspar";
 import { pinyin } from "pinyin-pro";
 export default {
-  props: ["title", "addVisable"],
+  props: ["status", "addVisable", "editData"],
   watch: {
     $route(to, from) {
       this.$refs.allScroll.scrollTop = 0;
@@ -650,9 +654,10 @@ export default {
   },
   data() {
     return {
+      type: "",
       textMap: {
-        update: "编辑",
-        create: "创建",
+        update: "编辑客户",
+        create: "新增客户",
       },
       moreVisable: true,
       optionsfwlx: null,
@@ -662,8 +667,8 @@ export default {
       optionsshengshiqu: null,
       optionsnsqu: null,
       optionsnsxz: [
-        { value: 1, label: "一般纳税人" },
-        { value: 2, label: "小规模" },
+        { value: "1", label: "一般纳税人" },
+        { value: "2", label: "小规模" },
       ],
       dialogStatus: null,
       dialogFormVisible: false,
@@ -773,6 +778,12 @@ export default {
     addVisable(curVal, oldVal) {
       this.dialogFormVisible = curVal;
     },
+    editData(val) {
+      this.temp = val;
+    },
+    status(val) {
+      this.type = val;
+    },
   },
   created() {
     this.showparm(1);
@@ -784,18 +795,22 @@ export default {
   },
   methods: {
     autoNum(e) {
-      const val = e.currentTarget.value.substring(0, 4);
-      const py = pinyin(val, { pattern: "first" }).replace(/\s*/g, "");
-      const y = new Date().getFullYear();
-      const m = new Date().getMonth() + 1;
-      const d = new Date().getDate();
-      const h = new Date().getHours();
-      const mm = new Date().getMinutes();
-      const s = new Date().getSeconds();
-      this.temp.clientNo = py + "0001";
-      this.temp.contractNo = `JZ${y}${m > 10 ? m : "0" + m}${
-        d > 10 ? d : "0" + d
-      }${h}${mm}${s}`;
+      if (this.type == "create") {
+        const val = e.currentTarget.value.substring(0, 4);
+        const py = pinyin(val, { pattern: "first" }).replace(/\s*/g, "");
+        const y = new Date().getFullYear();
+        const m = new Date().getMonth() + 1;
+        const d = new Date().getDate();
+        const h = new Date().getHours();
+        const mm = new Date().getMinutes();
+        const s = new Date().getSeconds();
+        this.temp.clientNo = py + "0001";
+        this.temp.contractNo = `JZ${y}${m > 10 ? m : "0" + m}${
+          d > 10 ? d : "0" + d
+        }${h > 10 ? h : "0" + h}${mm > 10 ? mm : "0" + mm}${
+          s > 10 ? s : "0" + s
+        }`;
+      }
     },
     insertContact() {
       this.temp.contacts.push({
@@ -829,6 +844,26 @@ export default {
               return this.$message.error(res.data.message);
             this.$emit("toggleViable", false, true);
             return this.$message.success("创建成功");
+          });
+        } else {
+          this.$message.warning(
+            "客户名称、服务类型、客户编号、合同编号不能为空"
+          );
+        }
+      });
+    },
+    updateData() {
+      this.$refs["dataForm"].validate((valid) => {
+        if (valid) {
+          this.temp.addressId =
+            this.temp.addressId && (this.temp.addressId + "").split(",");
+          this.temp.taxAreaId =
+            this.temp.taxAreaId && (this.temp.taxAreaId + "").split(",");
+          modifyClientData(this.temp).then((res) => {
+            if (res.data.retCode === 500)
+              return this.$message.error(res.data.message);
+            this.$emit("toggleViable", false, true);
+            return this.$message.success("修改成功");
           });
         } else {
           this.$message.warning(
@@ -938,6 +973,17 @@ export default {
       if (e.target.scrollTop > 977) {
         this.activ = 4;
       }
+    },
+    beforeHandle() {
+      if (this.type === "create") {
+        this.$confirm("确认关闭？")
+          .then((_) => {
+            this.$emit("toggleViable", false);
+          })
+          .catch((_) => {});
+        return;
+      }
+      this.$emit("toggleViable", false);
     },
   },
 };

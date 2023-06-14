@@ -162,12 +162,12 @@ export default {
       }, 1000);
       setTimeout(() => {
         window.location.reload();
-      }, 22000);
+      }, 42000);
     },
     increase() {
       clearInterval(timer);
       const timer = setInterval(() => {
-        this.percentage += 4.5;
+        this.percentage += 2.5;
         if (this.percentage > 100) {
           this.percentage = 100;
           clearInterval(timer);

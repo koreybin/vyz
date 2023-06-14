@@ -25,5 +25,6 @@ export default {
 <style scoped>
 .app-main {
   height: calc(100% - 100px);
+  background-color: #f7f7f7;
 }
 </style>

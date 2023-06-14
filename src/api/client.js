@@ -1,19 +1,25 @@
 import request from '@/utils/request'
-export function getlistClientData(data,pagenum,pagesize) 
-{
+export function getlistClientData(data, pagenum, pagesize) {
   return request({
-    url: '/account/accounting/client/getList?pageNum='+pagenum+'&pageSize='+pagesize,
+    url: '/account/accounting/client/getList?pageNum=' + pagenum + '&pageSize=' + pagesize,
     method: 'post',
     data
   })
 }
 
-export function addclient(data) 
-{
+export function addclient(data) {
   return request({
     url: '/account/accounting/client/setData',
     method: 'post',
     data
   })
 }
+export function modifyClientData(data) {
+  return request({
+    url: '/account/accounting/client/modifyClientData',
+    method: 'post',
+    data
+  })
+}
+
 

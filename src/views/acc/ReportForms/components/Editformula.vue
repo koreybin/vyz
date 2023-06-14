@@ -323,38 +323,72 @@ export default {
       e.target.select();
     },
     getSummaries({ columns, data }) {
-      const values = data.map((item) => {
-        return {
-          beginningYear: this.$numeral(item.beginningYear).value(),
-          endPeriod: this.$numeral(item.endPeriod).value(),
-          calculatingSigns: item.calculatingSigns,
-        };
-      });
-      let lastBegin = values.reduce((prev, curr) => {
-        const value = Number(curr.beginningYear);
-        if (curr.calculatingSigns === 2 && !isNaN(value)) {
-          return prev - curr.beginningYear;
-        } else if (curr.calculatingSigns === 1 && !isNaN(value)) {
-          return prev + curr.beginningYear;
-        } else {
-          return prev;
-        }
-      }, 0);
-      let lastEnd = values.reduce((prev, curr) => {
-        const value = Number(curr.endPeriod);
-        if (curr.calculatingSigns === 2 && !isNaN(value)) {
-          return prev - curr.endPeriod;
-        } else if (curr.calculatingSigns === 1 && !isNaN(value)) {
-          return prev + curr.endPeriod;
-        } else {
-          return prev;
-        }
-      }, 0);
-
-      let lastData = ["合计", null, null, lastEnd, lastBegin, null];
-      lastData[3] = this.$numeral(lastData[3]).format("0,0.00");
-      lastData[4] = this.$numeral(lastData[4]).format("0,0.00");
-      return lastData;
+      if (this.parent === "BalanceSheet") {
+        const values = data.map((item) => {
+          return {
+            beginningYear: this.$numeral(item.beginningYear).value(),
+            endPeriod: this.$numeral(item.endPeriod).value(),
+            calculatingSigns: item.calculatingSigns,
+          };
+        });
+        let lastBegin = values.reduce((prev, curr) => {
+          const value = Number(curr.beginningYear);
+          if (curr.calculatingSigns === 2 && !isNaN(value)) {
+            return prev - curr.beginningYear;
+          } else if (curr.calculatingSigns === 1 && !isNaN(value)) {
+            return prev + curr.beginningYear;
+          } else {
+            return prev;
+          }
+        }, 0);
+        let lastEnd = values.reduce((prev, curr) => {
+          const value = Number(curr.endPeriod);
+          if (curr.calculatingSigns === 2 && !isNaN(value)) {
+            return prev - curr.endPeriod;
+          } else if (curr.calculatingSigns === 1 && !isNaN(value)) {
+            return prev + curr.endPeriod;
+          } else {
+            return prev;
+          }
+        }, 0);
+        let lastData = ["合计", null, null, lastEnd, lastBegin, null];
+        lastData[3] = this.$numeral(lastData[3]).format("0,0.00");
+        lastData[4] = this.$numeral(lastData[4]).format("0,0.00");
+        return lastData;
+      }
+      if (this.parent === "ProfitStatement") {
+        const values = data.map((item) => {
+          return {
+            beginningYear: this.$numeral(item.yearNum).value(),
+            endPeriod: this.$numeral(item.periodNum).value(),
+            calculatingSigns: item.calculatingSigns,
+          };
+        });
+        let lastBegin = values.reduce((prev, curr) => {
+          const value = Number(curr.beginningYear);
+          if (curr.calculatingSigns === 2 && !isNaN(value)) {
+            return prev - curr.beginningYear;
+          } else if (curr.calculatingSigns === 1 && !isNaN(value)) {
+            return prev + curr.beginningYear;
+          } else {
+            return prev;
+          }
+        }, 0);
+        let lastEnd = values.reduce((prev, curr) => {
+          const value = Number(curr.endPeriod);
+          if (curr.calculatingSigns === 2 && !isNaN(value)) {
+            return prev - curr.endPeriod;
+          } else if (curr.calculatingSigns === 1 && !isNaN(value)) {
+            return prev + curr.endPeriod;
+          } else {
+            return prev;
+          }
+        }, 0);
+        let lastData = ["合计", null, null, lastEnd, lastBegin, null];
+        lastData[3] = this.$numeral(lastData[3]).format("0,0.00");
+        lastData[4] = this.$numeral(lastData[4]).format("0,0.00");
+        return lastData;
+      }
     },
     // fn(e, a, b) {
     //   this.aa = e;

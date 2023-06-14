@@ -414,7 +414,7 @@
         :label="$t('servermobj.client')"
       >
         <template slot-scope="scope">
-          <p>{{ scope.row.clientName }}</p>
+          <a @click="editService(scope.row)">{{ scope.row.clientName }}</a>
           <p>{{ scope.row.clientNo }}</p>
         </template>
       </el-table-column>
@@ -474,9 +474,11 @@
         align="center"
         :label="$t('servermobj.lackticket')"
       >
-        <template slot-scope="scope">
-          <span>{{ scope.row.addressId }}</span>
-        </template>
+        <span> </span>
+        <!-- <template slot-scope="scope"> -->
+        <!-- <span>{{ scope.row.addressId }}</span> -->
+
+        <!-- </template> -->
       </el-table-column>
       <el-table-column
         width="160px"
@@ -557,7 +559,8 @@
     </div>
     <addService
       :addVisable="addVisable"
-      :title="title"
+      :status="title"
+      :editData="editData"
       @toggleViable="toggleViable"
     ></addService>
     <createSet
@@ -757,6 +760,7 @@ export default {
       addVisable: false,
       createVisable: false,
       customer: "",
+      editData: "",
     };
   },
 
@@ -818,6 +822,90 @@ export default {
     moreHandle(command) {
       if (command == "新增客户") {
         this.addVisable = true;
+        this.title = "create";
+        this.editData = {
+          account: null,
+          accountStartData: null,
+          accumulationFundAccount: null,
+          accumulationFundPwd: null,
+          addressId: [],
+          clientName: null,
+          clientNo: null,
+          collectionDays: null,
+          contacts: [
+            {
+              account: null,
+              clientId: null,
+              contactPosition: null,
+              contactsName: null,
+              contactsPhone: null,
+              createBy: null,
+              createTime: null,
+              id: null,
+              isDeleted: null,
+              updateBy: null,
+              updateTime: null,
+            },
+          ],
+          contractNo: null,
+          contractRemark: null,
+          corporateIdCard: null,
+          costAccounting: null,
+          customersSource: null,
+          detailedAddress: null,
+          discountedPrice: null,
+          email: null,
+          endDate: null,
+          establishData: null,
+          id: null,
+          industryId: null,
+          inlandRevenue: null,
+          isTaxControlPlate: null,
+          ledgerPay: null,
+          legalRepresentative: null,
+          monthPay: null,
+          officePhone: null,
+          onlyCreditCode: null,
+          otherCost: null,
+          password: null,
+          personalTaxAccount: null,
+          personalTaxPwd: null,
+          qq: null,
+          valueskfs: null,
+          realMonthPrice: null,
+          receiveWay: null,
+          remark: null,
+          sendMonth: null,
+          serviceItem: 677,
+          serviceStartData: null,
+          serviceType: 545,
+          signUpDate: null,
+          socialSecurityAccount: null,
+          socialSecurityPwd: null,
+          startDate: null,
+          taxAreaId: [],
+          taxDeclarationPwd: null,
+          taxIdentificationCode: null,
+          taxNature: null,
+          taxPassword: null,
+          taxPhone: null,
+          taxRemark: null,
+          taxesList: [
+            {
+              clientId: null,
+              createBy: null,
+              createTime: null,
+              id: null,
+              isDeleted: null,
+              taxCategoriesId: null,
+              taxDeadline: null,
+              updateBy: null,
+              updateTime: null,
+            },
+          ],
+          totalMoney: null,
+          userId: null,
+        };
       }
     },
     createbooks(row) {
@@ -1104,6 +1192,13 @@ export default {
     // handleClose(tag) {
     //   this.tagList.splice(this.tagList.indexOf(tag), 1);
     // },
+    editService(row) {
+      this.addVisable = true;
+      this.title = "update";
+      this.editData = row;
+
+      console.log(row);
+    },
   },
 };
 </script>
