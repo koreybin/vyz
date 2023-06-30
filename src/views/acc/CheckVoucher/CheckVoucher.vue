@@ -26,9 +26,9 @@
                     <el-select v-model="searchData.startChapter" size="mini">
                       <el-option
                         v-for="item in startEndList"
-                        :key="item.disPeriod"
-                        :label="item.disPeriod"
-                        :value="item.yearPeriod"
+                        :key="item.period"
+                        :label="item.cnPeriod"
+                        :value="item.period"
                       ></el-option>
                     </el-select>
                   </el-col>
@@ -37,9 +37,9 @@
                     <el-select v-model="searchData.endChapter" size="mini">
                       <el-option
                         v-for="item in startEndList"
-                        :key="item.disPeriod"
-                        :label="item.disPeriod"
-                        :value="item.yearPeriod"
+                        :key="item.period"
+                        :label="item.cnPeriod"
+                        :value="item.period"
                       ></el-option>
                     </el-select>
                   </el-col>
@@ -223,7 +223,6 @@
         :row-style="selectChangeStyle"
         border
         align="center"
-        :default-sort="{ prop: 'prove' }"
         @row-dblclick="rowHandle"
         v-loading="loading"
       >
@@ -346,6 +345,9 @@
     <div v-if="toggle2">
       <VoucherSort @backView="backView"></VoucherSort>
     </div>
+    <div v-if="toggle3">
+      <voucher-input @backView="inputBackView"></voucher-input>
+    </div>
   </div>
 </template>
 
@@ -362,6 +364,7 @@ import {
 } from "@/api/acc/recordVoucher";
 import CheckVoucherIn from "./CheckVoucherIn";
 import VoucherSort from "./VoucherSort";
+import VoucherInput from "./VoucherInput";
 import { GetList } from "@/api/acc/prov";
 import bulkCopy from "./components/BulkCopy";
 import monthCopy from "./components/monthCopy";
@@ -375,6 +378,7 @@ export default {
     BillVoucherTemplatea,
     VoucherSort,
     monthCopy,
+    VoucherInput,
   },
   data() {
     return {
@@ -448,6 +452,7 @@ export default {
       toggle: true,
       toggle1: false,
       toggle2: false,
+      toggle3: false,
       moreVisible: false,
       msg: "",
       aa: false,
@@ -481,7 +486,7 @@ export default {
       selectAutData: [],
       selectUnautData: [],
       pageNum: 1,
-      pageSize: 20,
+      pageSize: 50,
       total: 0,
       subjectAllList: [],
       searchBoxShow: false,
@@ -490,9 +495,9 @@ export default {
   created() {
     this.subjectAllList = this.$store.getters.allSubjectList;
     this.searchData.startChapter =
-      this.$store.state.children.childrenData.nOfPeriods[0].yearPeriod;
+      this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
     this.searchData.endChapter =
-      this.$store.state.children.childrenData.nOfPeriods[0].yearPeriod;
+      this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
     GetList(1, 10).then((res) => {
       this.wordList = res.data.data.object;
       this.getList();
@@ -715,6 +720,10 @@ export default {
         this.toggle = false;
         this.toggle2 = true;
       }
+      if (command === "导入凭证") {
+        this.toggle = false;
+        this.toggle3 = true;
+      }
     },
     fn(bool) {
       this.copyVisable = bool;
@@ -813,6 +822,10 @@ export default {
       this.toggle = e;
       this.toggle2 = !e;
     },
+    inputBackView(e) {
+      this.toggle = e;
+      this.toggle3 = !e;
+    },
     sortProveNo(obj1, obj2) {
       let reg = /([^-]+)$/;
       let p1 = obj1.proveNo.match(reg)[1];
@@ -865,6 +878,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/deep/.el-pagination button:disabled,
+/deep/.el-pagination .btn-next {
+  background-color: transparent; /*进行修改未选中背景和字体*/
+}
+/deep/ .el-pager li {
+  background-color: transparent !important; /*进行修改未选中背景和字体*/
+}
+
 .b-item:hover {
   background-color: #ddd;
 }

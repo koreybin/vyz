@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+// 明细账树
 export function getTree(data) {
     return request({
         url: '/client/client/data/tree',
@@ -6,6 +7,7 @@ export function getTree(data) {
         data
     })
 }
+// 明细账表
 export function detailedBooks(assistId, data, subjectId) {
     return request({
         url: '/client/client/data/detailedBooks?assistId=' + assistId + '&subjectId=' + subjectId,
@@ -13,6 +15,7 @@ export function detailedBooks(assistId, data, subjectId) {
         data
     })
 }
+// 总账
 export function generalLedger(data) {
     return request({
         url: '/client/client/data/generalLedger',
@@ -20,6 +23,7 @@ export function generalLedger(data) {
         data
     })
 }
+// 凭证汇总表
 export function voucherSummary(data) {
     return request({
         url: '/client/client/data/voucherSummary',
@@ -27,6 +31,7 @@ export function voucherSummary(data) {
         data
     })
 }
+// 科目余额表
 export function subjectBalance(data) {
     return request({
         url: '/client/client/data/subjectBalance',
@@ -34,6 +39,7 @@ export function subjectBalance(data) {
         data
     })
 }
+// 数量明细树
 export function quantityAmountDetailsTree(data) {
     return request({
         url: '/client/client/data/quantityAmountDetailsTree',
@@ -41,6 +47,7 @@ export function quantityAmountDetailsTree(data) {
         data
     })
 }
+// 数量明细表
 export function quantityAmountDetails(assistId, data, subjectId) {
     return request({
         url: '/client/client/data/quantityAmountDetails?assistId=' + assistId + '&subjectId=' + subjectId,
@@ -48,6 +55,7 @@ export function quantityAmountDetails(assistId, data, subjectId) {
         data
     })
 }
+// 数量金额总账
 export function quantityAmountGeneral(data) {
     return request({
         url: '/client/client/data/quantityAmountGeneral',
@@ -55,6 +63,7 @@ export function quantityAmountGeneral(data) {
         data
     })
 }
+// 多栏账
 export function multiColumnLedger(data) {
     return request({
         url: '/client/client/data/multiColumnLedger',
@@ -62,6 +71,7 @@ export function multiColumnLedger(data) {
         data
     })
 }
+// 项目余额表
 export function accountingItemBalance(data, assistId) {
     return request({
         url: '/client/client/data/accountingItemBalance?assistId=' + assistId,
@@ -69,6 +79,7 @@ export function accountingItemBalance(data, assistId) {
         data
     })
 }
+// 核酸项目明细树
 export function accItemDetailedTree(data, assistTypeId) {
     return request({
         url: '/client/client/data/accItemDetailedTree?assistTypeId=' + assistTypeId,
@@ -76,6 +87,7 @@ export function accItemDetailedTree(data, assistTypeId) {
         data
     })
 }
+// 核算项目余额表
 export function accountingItemDetailed(assistId, assistTypeId, data, subjectId) {
     return request({
         url: '/client/client/data/accountingItemDetailed?assistId=' + assistId + '&assistTypeId=' + assistTypeId + '&subjectId=' + subjectId,
@@ -83,7 +95,7 @@ export function accountingItemDetailed(assistId, assistTypeId, data, subjectId) 
         data
     })
 }
-// 总账拉去客户总数额
+// 总账拉取客户总数额
 
 export function pull() {
     return request({

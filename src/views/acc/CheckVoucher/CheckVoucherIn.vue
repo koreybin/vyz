@@ -714,6 +714,9 @@ export default {
       this.list[index].subjectLen = this.list[index].otherSubjectName
         ? this.list[index].otherSubjectName.length
         : 0;
+      this.list[index].aid = this.list[index].AuxiliaryList.map(
+        (item) => item.id
+      );
       this.list[index].AuxiliaryList.forEach((item) => (item.value = ""));
       this.list[index].AuxiliaryList.forEach((item) => delete item.id);
     },
@@ -1184,7 +1187,7 @@ export default {
     addList() {
       let obj = {
         content: "",
-        aid: null,
+        aid: [],
         isShowMainInput: false,
         balanceDirection: "",
         subjectName: "",
@@ -1294,7 +1297,7 @@ export default {
           contentId: this.list[a].contentId || null,
           createTime: this.list[a].createTime || null,
           unitPrice: this.list[a].unitPrice || null,
-          aid: this.list[a].aid === [] ? null : this.list[a].aid,
+          aid: this.list[a].aid === [] ? [] : this.list[a].aid,
         };
         list.push(obj);
       }

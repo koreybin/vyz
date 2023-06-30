@@ -25,9 +25,9 @@
                     <el-select v-model="query.startDate" size="mini">
                       <el-option
                         v-for="item in startEndList"
-                        :key="item.disPeriod"
-                        :label="item.disPeriod"
-                        :value="item.yearPeriod"
+                        :key="item.period"
+                        :label="item.cnPeriod"
+                        :value="item.period"
                       ></el-option>
                     </el-select>
                   </el-col>
@@ -36,9 +36,9 @@
                     <el-select v-model="query.endDate" size="mini">
                       <el-option
                         v-for="item in startEndList"
-                        :key="item.disPeriod"
-                        :label="item.disPeriod"
-                        :value="item.yearPeriod"
+                        :key="item.period"
+                        :label="item.cnPeriod"
+                        :value="item.period"
                       ></el-option>
                     </el-select>
                   </el-col>
@@ -336,9 +336,9 @@ export default {
   created() {
     this.subjectAllList = this.$store.getters.allSubjectList;
     this.query.startDate =
-      this.$store.state.children.childrenData.nOfPeriods[0].yearPeriod;
+      this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
     this.query.endDate =
-      this.$store.state.children.childrenData.nOfPeriods[0].yearPeriod;
+      this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
     this.firstGetTree();
   },
   computed: {
@@ -393,9 +393,9 @@ export default {
   methods: {
     resetTime() {
       this.query.startDate =
-        this.$store.state.children.childrenData.nOfPeriods[0].yearPeriod;
+        this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
       this.query.endDate =
-        this.$store.state.children.childrenData.nOfPeriods[0].yearPeriod;
+        this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
     },
     getList() {
       let q = this.query.quantity;

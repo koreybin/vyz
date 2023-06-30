@@ -553,6 +553,7 @@ export default {
       tabs: [
         { id: 1, name: "资产" },
         { id: 2, name: "负债" },
+        { id: 5, name: "共同" },
         { id: 3, name: "权益" },
         { id: 4, name: "成本" },
         { id: 6, name: "损益" },

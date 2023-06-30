@@ -17,7 +17,14 @@ export function initial(pageNum, pageSize) {
 export function getPeriod() {
     return request({
         url: '/client/client/data/getPeriod',
-        method: 'put'
+        method: 'get'
+    })
+}
+// 获取当前客户可用时间
+export function getPeriodList() {
+    return request({
+        url: '/client/client/data/getPeriodList',
+        method: 'get'
     })
 }
 // 获取用户信息

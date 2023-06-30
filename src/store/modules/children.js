@@ -1,4 +1,4 @@
-import { getPeriod, getData } from "@/api/acc/Repertory/InventorySettings"
+import { getPeriod, getData, getPeriodList } from "@/api/acc/Repertory/InventorySettings"
 import { GetAllList } from "@/api/acc/BillVoucherTemplate"
 // import autoGetDate from "@/utils/autoGetDate"
 const children = {
@@ -25,12 +25,16 @@ const children = {
     },
     actions: {
         async intoChildren({ commit, dispatch }) {
+            const { data: res } = await getPeriodList()
+            console.log(res)
             const { data } = await getData()
             if (data.data) {
                 let year = data.data.setNowPeriod.substr(0, 4)
                 let mouth = data.data.setNowPeriod.substr(5, 2).replace(/^[0]/g, "")
                 data.data.numberOfPeriods = [{ disPeriod: `${year}年第${mouth}期`, yearPeriod: data.data.setNowPeriod }]
-                data.data.nOfPeriods = [{ disPeriod: `${year}年${mouth}期`, yearPeriod: data.data.setNowPeriod }, { disPeriod: `2023年3期`, yearPeriod: '2023-03' }, { disPeriod: `2023年4期`, yearPeriod: '2023-04' }, { disPeriod: `2022年3期`, yearPeriod: '2022-03' }, { disPeriod: `2022年4期`, yearPeriod: '2022-04' }, { disPeriod: `2022年5期`, yearPeriod: '2022-05' }, { disPeriod: `2022年6期`, yearPeriod: '2022-06' }, { disPeriod: `2022年7期`, yearPeriod: '2022-07' }, { disPeriod: `2022年8期`, yearPeriod: '2022-08' }, { disPeriod: `2022年9期`, yearPeriod: '2022-09' }]
+                // data.data.nOfPeriods = [{ disPeriod: `${year}年${mouth}期`, yearPeriod: data.data.setNowPeriod }, { disPeriod: `2023年3期`, yearPeriod: '2023-03' }, { disPeriod: `2023年4期`, yearPeriod: '2023-04' }, { disPeriod: `2022年3期`, yearPeriod: '2022-03' }, { disPeriod: `2022年4期`, yearPeriod: '2022-04' }, { disPeriod: `2022年5期`, yearPeriod: '2022-05' }, { disPeriod: `2022年6期`, yearPeriod: '2022-06' }, { disPeriod: `2022年7期`, yearPeriod: '2022-07' }, { disPeriod: `2022年8期`, yearPeriod: '2022-08' }, { disPeriod: `2022年9期`, yearPeriod: '2022-09' }]
+                data.data.nOfPeriods = res.data
+
                 commit('SET_DATA', data.data)
             }
             dispatch('getAllList')

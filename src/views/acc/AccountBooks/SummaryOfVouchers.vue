@@ -180,12 +180,11 @@ export default {
       this.wordList = res.data.data.object;
       this.value1 = this.dateRange;
       this.getData();
-      this.query.startDate = autoGetDate(
-        this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod
-      )[0];
-      this.query.endDate = autoGetDate(
-        this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod
-      )[1];
+      this.query.startDate =
+        this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
+
+      this.query.endDate =
+        this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
     });
   },
   activated() {},
@@ -196,9 +195,9 @@ export default {
   methods: {
     resetTime() {
       this.query.startDate =
-        this.$store.state.children.childrenData.nOfPeriods[0].yearPeriod;
+        this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
       this.query.endDate =
-        this.$store.state.children.childrenData.nOfPeriods[0].yearPeriod;
+        this.$store.state.children.childrenData.numberOfPeriods[0].yearPeriod;
     },
     async getData() {
       voucherSummary(this.query).then((res) => {

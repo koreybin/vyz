@@ -788,6 +788,9 @@ export default {
       this.list[index].subjectLen = this.list[index].otherSubjectName
         ? this.list[index].otherSubjectName.length
         : 0;
+      this.list[index].aid = this.list[index].AuxiliaryList.map(
+        (item) => item.id
+      );
       this.list[index].AuxiliaryList.forEach((item) => (item.value = ""));
       this.list[index].AuxiliaryList.forEach((item) => delete item.id);
     },

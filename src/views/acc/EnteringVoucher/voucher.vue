@@ -530,7 +530,7 @@
         :tempList="tempList"
       ></insertVoucherTemplate>
     </div>
-    <el-button @click="test">测试</el-button>
+    <!-- <el-button @click="test">测试</el-button> -->
   </div>
 </template>
  
@@ -703,6 +703,7 @@ export default {
           searchSubjectBoxShow: false,
         },
       ],
+      emptyList: [],
       AuxiliaryOption: [],
       msg: "",
       aa: false,
@@ -758,6 +759,9 @@ export default {
     });
     this.subjectAllList = this.$store.getters.allSubjectList;
   },
+  mounted() {
+    this.emptyList = structuredClone(this.list);
+  },
   updated() {
     //给特定区域添加ID   绑定onmousedown 事件
     let chargeContainer = document.getElementById("chargeContainer");
@@ -783,9 +787,10 @@ export default {
   },
 
   methods: {
-    test(s) {
-      console.log(this.list);
-    },
+    // test(s) {
+    //   console.log(this.list);
+    //   console.log(this.emptyList);
+    // },
     wordChange(val) {
       const [id, prove] = val.split(",");
       this.voucher.word = id;
@@ -803,6 +808,11 @@ export default {
       this.list[index].subjectLen = this.list[index].otherSubjectName
         ? this.list[index].otherSubjectName.length
         : 0;
+      this.list[index].aid = JSON.parse(
+        JSON.stringify(this.list[index].AuxiliaryList)
+      );
+      this.list[index].AuxiliaryList.forEach((item) => (item.value = ""));
+      this.list[index].AuxiliaryList.forEach((item) => delete item.id);
     },
     auxiliaryFocus(index, index11, type) {
       GetListPageByType(type, 1, 10).then(
@@ -985,6 +995,7 @@ export default {
           this.searchSelect(this.searchList[this.bItemIndex]);
       }
     },
+    // 键盘选择科目
     searchSelect(item) {
       let index = this.dialogSubjectIndex;
       this.list[index].searchSubjectBoxShow = false;
@@ -1010,6 +1021,7 @@ export default {
       }
       if (!this.list[index].isQuantity) this.showInput(index, "debtor");
     },
+    // 科目弹窗
     fn(e, a, b) {
       this.aa = e;
       let index = this.dialogSubjectIndex;
@@ -1043,137 +1055,9 @@ export default {
       this.list[this.dialogMainIndex].contentId = data.id;
       this.list[this.dialogMainIndex].createTime = data.createTime;
     },
+    // 获取凭证模板
     getTemp(bool, data) {
-      let list = [
-        {
-          content: "",
-          aid: null,
-          isShowMainInput: false,
-          balanceDirection: "",
-          subjectName: "",
-          subject: {
-            price: "",
-            quantity: "",
-            balance: "",
-          },
-          subjectId: "",
-          contentId: "",
-          subjectLen: 0,
-          otherSubjectName: "",
-          unit: "",
-          subjectImportAmount: "",
-          unitPrice: "",
-          subjectImportMoney: "",
-          isShowSubjectInput: false,
-          debtor: "",
-          debtorList: ["", "", "", "", "", "", "", "", "", "", ""],
-          isShowDebtorInput: false,
-          lender: "",
-          lenderList: ["", "", "", "", "", "", "", "", "", "", ""],
-          isShowLenderInput: false,
-          isQuantity: false,
-          isOpenQuantity: "",
-          AuxiliaryList: [],
-          isAuxiliary: false,
-          auxiliaryDisable: true,
-        },
-        {
-          content: "",
-          aid: null,
-          isShowMainInput: false,
-          balanceDirection: "",
-          subjectName: "",
-          subject: {
-            price: "",
-            quantity: "",
-            balance: "",
-          },
-          subjectId: "",
-          contentId: "",
-          subjectLen: 0,
-          otherSubjectName: "",
-          unit: "",
-          subjectImportAmount: "",
-          unitPrice: "",
-          subjectImportMoney: "",
-          isShowSubjectInput: false,
-          debtor: "",
-          debtorList: ["", "", "", "", "", "", "", "", "", "", ""],
-          isShowDebtorInput: false,
-          lender: "",
-          lenderList: ["", "", "", "", "", "", "", "", "", "", ""],
-          isShowLenderInput: false,
-          isQuantity: false,
-          isOpenQuantity: "",
-          AuxiliaryList: [],
-          isAuxiliary: false,
-          auxiliaryDisable: true,
-        },
-        {
-          content: "",
-          aid: null,
-          isShowMainInput: false,
-          balanceDirection: "",
-          subjectName: "",
-          subject: {
-            price: "",
-            quantity: "",
-            balance: "",
-          },
-          subjectId: "",
-          contentId: "",
-          subjectLen: 0,
-          otherSubjectName: "",
-          unit: "",
-          subjectImportAmount: "",
-          unitPrice: "",
-          subjectImportMoney: "",
-          isShowSubjectInput: false,
-          debtor: "",
-          debtorList: ["", "", "", "", "", "", "", "", "", "", ""],
-          isShowDebtorInput: false,
-          lender: "",
-          lenderList: ["", "", "", "", "", "", "", "", "", "", ""],
-          isShowLenderInput: false,
-          isQuantity: false,
-          isOpenQuantity: "",
-          AuxiliaryList: [],
-          isAuxiliary: false,
-          auxiliaryDisable: true,
-        },
-        {
-          content: "",
-          aid: null,
-          isShowMainInput: false,
-          balanceDirection: "",
-          subjectName: "",
-          subject: {
-            price: "",
-            quantity: "",
-            balance: "",
-          },
-          subjectId: "",
-          contentId: "",
-          subjectLen: 0,
-          otherSubjectName: "",
-          unit: "",
-          subjectImportAmount: "",
-          unitPrice: "",
-          subjectImportMoney: "",
-          isShowSubjectInput: false,
-          debtor: "",
-          debtorList: ["", "", "", "", "", "", "", "", "", "", ""],
-          isShowDebtorInput: false,
-          lender: "",
-          lenderList: ["", "", "", "", "", "", "", "", "", "", ""],
-          isShowLenderInput: false,
-          isQuantity: false,
-          isOpenQuantity: "",
-          AuxiliaryList: [],
-          isAuxiliary: false,
-          auxiliaryDisable: true,
-        },
-      ];
+      let list = this.emptyList;
       this.cc = bool;
       if (data) {
         let len = data.content.length;
@@ -1212,6 +1096,7 @@ export default {
       this.calcLenderTotal();
       this.calcDebtorTotal();
     },
+    // 新增弹窗
     insertTemp(bool) {
       this.dd = bool;
     },
@@ -1245,6 +1130,32 @@ export default {
       }
     },
 
+    focusSubject(index, e) {
+      this.bItemIndex = 0;
+      const len = e.target.value.length;
+      this.list[index].searchSubjectBoxShow = true;
+
+      this.dialogSubjectIndex = index;
+      if (len) {
+        e.target.setSelectionRange(0, len);
+      }
+      const item = this.$refs.boxIn[this.dialogSubjectIndex].children;
+      item[this.bItemIndex] && (item[this.bItemIndex].className = "b-item on");
+    },
+    inputSubject(index, e) {
+      this.bItemIndex = 0;
+      const item = this.$refs.boxIn[this.dialogSubjectIndex].children;
+      for (let i = 0; i < item.length; i++) {
+        item[i].className = "b-item";
+      }
+      this.$nextTick(() => {
+        const item = this.$refs.boxIn[this.dialogSubjectIndex].children;
+        item[this.bItemIndex] &&
+          (item[this.bItemIndex].className = "b-item on");
+      });
+    },
+    inputMain(index, e) {},
+    // 键盘事件
     keyupEvents(index, e, remaind) {
       if ((e.keyCode == 13 || e.keyCode == 9) && remaind === 2) {
         this.$nextTick(() => {
@@ -1297,31 +1208,7 @@ export default {
       //判断是否显示辅助核算
       this.judgeisQuantity();
     },
-    focusSubject(index, e) {
-      this.bItemIndex = 0;
-      const len = e.target.value.length;
-      this.list[index].searchSubjectBoxShow = true;
-
-      this.dialogSubjectIndex = index;
-      if (len) {
-        e.target.setSelectionRange(0, len);
-      }
-      const item = this.$refs.boxIn[this.dialogSubjectIndex].children;
-      item[this.bItemIndex] && (item[this.bItemIndex].className = "b-item on");
-    },
-    inputSubject(index, e) {
-      this.bItemIndex = 0;
-      const item = this.$refs.boxIn[this.dialogSubjectIndex].children;
-      for (let i = 0; i < item.length; i++) {
-        item[i].className = "b-item";
-      }
-      this.$nextTick(() => {
-        const item = this.$refs.boxIn[this.dialogSubjectIndex].children;
-        item[this.bItemIndex] &&
-          (item[this.bItemIndex].className = "b-item on");
-      });
-    },
-    inputMain(index, e) {},
+    // 快捷键盘事件
     keyboardEvents(type, number) {
       let total = this.list.length * 4;
       if (type == "enter") {
@@ -1346,6 +1233,7 @@ export default {
         this.showInput(index - 1, "lender");
       }
     },
+    // 数量键盘事件
     amountInputKeyup(index) {
       if (this.list[index].debtor) {
         let debtorNum = Number(this.list[index].debtor);
@@ -1368,6 +1256,7 @@ export default {
       this.list[index].balanceDirection = 1;
       this.calcDebtorTotal();
     },
+    // 价格键盘事件
     priceInputKeyup(index) {
       let lenderList = ["", "", "", "", "", "", "", "", "", "", ""];
       this.list[index].balanceDirection = 1;
@@ -1380,33 +1269,7 @@ export default {
       this.list[index].debtorList = collatingData(debtor, debtorList);
       this.calcDebtorTotal();
     },
-    calcDebtorTotal(index) {
-      let debtorTotal = 0;
-      for (let i in this.list) {
-        if (
-          this.list[i].debtor != null &&
-          this.list[i].debtor != "" &&
-          this.list[i].debtor !== 0
-        ) {
-          if (!(index && index == i)) {
-            const d = isNaN(this.list[i].debtor) ? 0 : this.list[i].debtor;
-            debtorTotal += d * 1;
-          }
-        }
-      }
-
-      this.debtorTotal = debtorTotal;
-      debtorTotal = debtorTotal + "";
-      let debtorTotalList = ["", "", "", "", "", "", "", "", "", "", ""];
-      this.debtorTotalList = collatingData(debtorTotal, debtorTotalList);
-      if (this.debtorTotal === this.lenderTotal) {
-        this.num = toChinesNum(this.debtorTotal);
-        this.sum = this.debtorTotal;
-      } else {
-        this.num = "";
-      }
-    },
-
+    // 贷方键盘事件
     lenderInputKeyUp(index, e, remaind) {
       //   this.list[index].lender=this.list[index].lender.replace(/\D/g,'');
       if (e.keyCode === 187) {
@@ -1475,6 +1338,7 @@ export default {
       this.calcLenderTotal();
       this.calcDebtorTotal();
     },
+    // 借方键盘事件
     debtorInputKeyUp(index, e, remaind) {
       if (e.keyCode === 187) {
         this.calcDebtorTotal(index);
@@ -1542,6 +1406,34 @@ export default {
       this.calcDebtorTotal();
       this.calcLenderTotal();
     },
+    // 借方金额总和
+    calcDebtorTotal(index) {
+      let debtorTotal = 0;
+      for (let i in this.list) {
+        if (
+          this.list[i].debtor != null &&
+          this.list[i].debtor != "" &&
+          this.list[i].debtor !== 0
+        ) {
+          if (!(index && index == i)) {
+            const d = isNaN(this.list[i].debtor) ? 0 : this.list[i].debtor;
+            debtorTotal += d * 1;
+          }
+        }
+      }
+
+      this.debtorTotal = debtorTotal;
+      debtorTotal = debtorTotal + "";
+      let debtorTotalList = ["", "", "", "", "", "", "", "", "", "", ""];
+      this.debtorTotalList = collatingData(debtorTotal, debtorTotalList);
+      if (this.debtorTotal === this.lenderTotal) {
+        this.num = toChinesNum(this.debtorTotal);
+        this.sum = this.debtorTotal;
+      } else {
+        this.num = "";
+      }
+    },
+    // 借方金额总和
     calcLenderTotal(index) {
       let lenderTotal = 0;
       for (let i in this.list) {
@@ -1567,6 +1459,7 @@ export default {
         this.num = "";
       }
     },
+
     addList() {
       let obj = {
         content: "",
@@ -1661,9 +1554,10 @@ export default {
       let list = [];
       for (let a = 0; a < this.list.length; a++) {
         let aid = [];
-        this.list[a].AuxiliaryList.forEach((item) => {
-          aid.push(item.id);
-        });
+        this.list[a].aid &&
+          this.list[a].aid.forEach((item) => {
+            aid.push(item.id);
+          });
         let obj = {
           content: this.list[a].content, //摘要内容
           balanceDirection: this.list[a].balanceDirection, //（借/贷）
@@ -1875,8 +1769,6 @@ export default {
       }
       if (status === 1) {
         let reqObj = this.checkListData();
-
-        console.log(reqObj);
         if (reqObj) {
           this.saveVisible = false;
           this.saveVisible1 = true;
@@ -1912,7 +1804,7 @@ table td {
 }
 /deep/ .el-input--mini .el-input__inner {
   border: none;
-  border-bottom: 1px solid #cccc;
+  border-bottom: 1px solid #ccc;
   border-radius: 0;
   padding: 0;
 }

@@ -77,7 +77,7 @@
     <br />
     <el-row v-if="listShow">
       <div class="tidy-filter" style="float: left">
-        <el-table :data="list">
+        <el-table :data="list" class="t-scroll">
           <el-table-column label="原有凭证号" prop="oldNum"></el-table-column>
           <el-table-column label="补齐后凭证号" prop="newNum"></el-table-column>
         </el-table>
@@ -201,5 +201,8 @@ export default {
 .current {
   color: #317da7;
   font-weight: bold;
+}
+/deep/.t-scroll .el-table__body-wrapper {
+  height: 300px !important;
 }
 </style>

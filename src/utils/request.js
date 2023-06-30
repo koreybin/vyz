@@ -13,7 +13,7 @@ let base = 'api'
 const service = axios.create({
   baseURL: base, // api的base_url
   // baseURL: process.env.BASE_API + base, // api的base_url
-  timeout: 6000,// request timeout 请求超时时间
+  timeout: 40000,// request timeout 请求超时时间
   // withCredentials: true, 
   headers: {
     'Content-Type': 'application/json; charset=utf-8'

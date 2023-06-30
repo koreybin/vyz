@@ -47,14 +47,14 @@ export function delet(billId, entriesId) {
         method: 'delete'
     })
 }
-
+// 获取票据凭证模板列表
 export function getDefListByType(system, taxType, type) {
     return request({
         url: 'account/set-def-bill-voucher-temp/getDefListByType?system=' + system + '&taxpayerType=' + taxType + '&type=' + type,
         method: 'get'
     })
 }
-
+// 新增凭证模板
 export function addTemp(data) {
     return request({
         url: 'account/set-def-bill-voucher-temp/addTemp',
@@ -62,12 +62,14 @@ export function addTemp(data) {
         data
     })
 }
+// 修改模板摘要
 export function editSummary(id, summary) {
     return request({
         url: 'account/set-def-bill-voucher-temp/editSummary?id=' + id + '&summary=' + summary,
         method: 'post'
     })
 }
+// 保存
 export function saveTempEntries(data) {
     return request({
         url: 'account/set-def-bill-voucher-temp/saveTempEntries',
@@ -75,6 +77,7 @@ export function saveTempEntries(data) {
         data
     })
 }
+// 以外修改保存
 export function updateTemp(data) {
     return request({
         url: 'account/set-def-bill-voucher-temp/updateTemp',
@@ -82,6 +85,7 @@ export function updateTemp(data) {
         data
     })
 }
+// 科目树
 export function getSubjectTree(system, type) {
     return request({
         url: 'account/set-default-subject/tree?system=' + system + '&type=' + type,
